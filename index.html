@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Are We Okay? — Marcus Financial Planning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #F7F5F1;
+      --surface: #FFFFFF;
+      --border: #E5E1D9;
+      --border-strong: #C9C4BA;
+      --text: #17140E;
+      --sub: #58544A;
+      --muted: #9A9589;
+      --accent: #1B4F72;
+      --accent-mid: #2775AA;
+      --accent-light: #E8F2FA;
+      --accent-border: #B0CFEA;
+      --green: #165C38;
+      --green-bg: #ECF8F3;
+      --green-border: #96D4B2;
+      --green-fill: #27AE60;
+      --amber: #7A4B00;
+      --amber-bg: #FFF7EB;
+      --amber-border: #EDD090;
+      --amber-fill: #E59400;
+      --red: #7A1C1C;
+      --red-bg: #FDF2F2;
+      --red-border: #EAB0B0;
+      --red-fill: #D94040;
+      --r-sm: 8px;
+      --r-md: 14px;
+      --r-lg: 22px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 12px 40px rgba(0,0,0,0.05);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08), 0 24px 64px rgba(0,0,0,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── ENTRANCE ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes slideRight {
+      from { width: 0%; }
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(5px); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.5; }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .anim-fade-up   { animation: fadeUp 0.6s cubic-bezier(0.4,0,0.2,1) both; }
+    .anim-fade-in   { animation: fadeIn 0.5s ease both; }
+    .anim-scale-in  { animation: scaleIn 0.5s cubic-bezier(0.4,0,0.2,1) both; }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.45s; }
+    .delay-5 { animation-delay: 0.6s; }
+    .delay-6 { animation-delay: 0.75s; }
+
+    /* ─── NAV ─── */
+    nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 22px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeIn 0.5s ease both;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .nav-dot {
+      width: 8px; height: 8px;
+      background: var(--accent-mid);
+      border-radius: 50%;
+      animation: pulse 3s ease-in-out infinite;
+    }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 9px 20px;
+      border: 1.5px solid var(--accent-border);
+      border-radius: 100px;
+      background: var(--accent-light);
+      transition: all 0.2s ease;
+      letter-spacing: -0.01em;
+    }
+    .nav-cta:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px rgba(27,79,114,0.28);
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 68px 36px 60px;
+      text-align: center;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      padding: 6px 14px 6px 10px;
+      border-radius: 100px;
+      margin-bottom: 30px;
+    }
+    .pill-dot {
+      width: 6px; height: 6px;
+      background: var(--accent-mid);
+      border-radius: 50%;
+    }
+    .hero h1 {
+      font-size: clamp(48px, 7.5vw, 72px);
+      font-weight: 800;
+      letter-spacing: -0.045em;
+      line-height: 0.97;
+      color: var(--text);
+      margin-bottom: 26px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 700;
+      color: var(--accent-mid);
+      background: linear-gradient(135deg, var(--accent-mid), #4A9FD4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--sub);
+      max-width: 540px;
+      margin: 0 auto 10px;
+      line-height: 1.7;
+      font-weight: 400;
+    }
+    .hero-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 52px;
+      font-weight: 500;
+    }
+
+    /* ─── HERO STATS ─── */
+    .hero-stats {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      margin-bottom: 60px;
+    }
+    .h-stat {
+      padding: 20px 36px;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    .h-stat:hover { background: var(--bg); }
+    .h-stat + .h-stat { border-left: 1px solid var(--border); }
+    .h-stat-n {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .h-stat-l {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── SCROLL INDICATOR ─── */
+    .scroll-cue {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .scroll-ring {
+      width: 34px; height: 34px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+
+    /* ─── CALC SECTION ─── */
+    .calc-section {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+    .calc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+    .calc-card:hover {
+      box-shadow: 0 12px 32px rgba(0,0,0,0.1), 0 32px 80px rgba(0,0,0,0.08);
+    }
+
+    /* ─── FORM ─── */
+    .form-head {
+      padding: 32px 36px 26px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(247,245,241,0.3) 100%);
+    }
+    .form-title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .form-sub { font-size: 14px; color: var(--sub); }
+
+    .form-body { padding: 28px 36px 32px; }
+    .form-grid { display: flex; flex-direction: column; gap: 20px; margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .field-hint { font-size: 11px; color: var(--muted); margin-top: -3px; }
+
+    input {
+      height: 50px;
+      padding: 0 16px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      font-size: 16px;
+      font-family: inherit;
+      font-weight: 500;
+      color: var(--text);
+      background: var(--bg);
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, transform 0.1s;
+      width: 100%;
+    }
+    input::placeholder { color: var(--muted); font-weight: 400; }
+    input:hover { border-color: var(--border-strong); }
+    input:focus {
+      outline: none;
+      border-color: var(--accent-mid);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px rgba(39,117,170,0.12);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 54px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+      color: #fff;
+      border: none;
+      border-radius: var(--r-sm);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(27,79,114,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27,79,114,0.4);
+    }
+    .submit-btn:active { transform: translateY(0); box-shadow: 0 2px 8px rgba(27,79,114,0.3); }
+
+    /* ─── RESULT ─── */
+    #result-section { display: none; }
+    #result-section.visible { display: block; animation: scaleIn 0.4s cubic-bezier(0.4,0,0.2,1) both; }
+
+    .result-banner {
+      padding: 32px 36px 28px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .result-banner::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+    .rb-green { background: var(--green-bg); border-color: var(--green-border); }
+    .rb-green::before { background: var(--green-fill); }
+    .rb-amber { background: var(--amber-bg); border-color: var(--amber-border); }
+    .rb-amber::before { background: var(--amber-fill); }
+    .rb-red   { background: var(--red-bg);   border-color: var(--red-border); }
+    .rb-red::before   { background: var(--red-fill); }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.4s ease both;
+    }
+    .sp-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .sp-green { background: #C0EDD4; color: var(--green); }
+    .sp-green .sp-dot { background: var(--green); }
+    .sp-amber { background: #FCDDA0; color: var(--amber); }
+    .sp-amber .sp-dot { background: var(--amber-fill); }
+    .sp-red   { background: #F5CACA; color: var(--red); }
+    .sp-red .sp-dot   { background: var(--red-fill); }
+
+    .result-hl {
+      font-size: clamp(20px, 3.5vw, 26px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      animation: fadeUp 0.4s 0.05s ease both;
+    }
+    .hl-green { color: var(--green); }
+    .hl-amber { color: var(--amber); }
+    .hl-red   { color: var(--text); }
+
+    .result-body {
+      font-size: 15px;
+      color: var(--sub);
+      line-height: 1.8;
+      margin-bottom: 26px;
+      animation: fadeUp 0.4s 0.1s ease both;
+    }
+    .result-body strong { color: var(--text); font-weight: 600; }
+
+    /* PROGRESS */
+    .prog-wrap { animation: fadeUp 0.4s 0.15s ease both; }
+    .prog-track {
+      height: 6px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .prog-fill {
+      height: 100%;
+      border-radius: 3px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .pf-green { background: linear-gradient(90deg, var(--green-fill), #52E090); }
+    .pf-amber { background: linear-gradient(90deg, var(--amber-fill), #F5C842); }
+    .pf-red   { background: linear-gradient(90deg, var(--red-fill), #E86060); }
+    .prog-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ─── STATS ─── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 24px 36px;
+      border-bottom: 1px solid var(--border);
+    }
+    .stat-tile {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 15px 17px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .stat-tile:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .stat-value {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    /* ─── CONTEXT BANNER ─── */
+    .context-banner {
+      margin: 20px 36px;
+      background: var(--accent-light);
+      border: 1px solid var(--accent-border);
+      border-radius: var(--r-sm);
+      padding: 16px 18px;
+      font-size: 14px;
+      color: #1A4A6A;
+      line-height: 1.65;
+      position: relative;
+      padding-left: 46px;
+    }
+    .context-banner::before {
+      content: '👥';
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      font-size: 16px;
+    }
+    .context-banner strong { font-weight: 700; color: var(--accent); }
+
+    /* ─── PATH CARDS ─── */
+    .path-block { padding: 4px 36px 28px; }
+    .path-block-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .path-list { display: flex; flex-direction: column; gap: 8px; }
+    .path-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 15px 18px;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .path-item:hover {
+      border-color: var(--border-strong);
+      transform: translateX(3px);
+      box-shadow: var(--shadow-sm);
+    }
+    .path-text { font-size: 14px; color: var(--sub); flex: 1; }
+    .path-val  { font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .path-val.good { color: var(--green); }
+
+    /* ─── REASSURANCE ─── */
+    .reassurance {
+      margin: 0 36px 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .reassurance-copy {
+      font-size: 15px;
+      color: var(--sub);
+      line-height: 1.8;
+      margin-bottom: 22px;
+    }
+    .reassurance-copy strong { color: var(--text); font-weight: 600; }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 14px 26px;
+      border-radius: var(--r-sm);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 16px rgba(27,79,114,0.32);
+      letter-spacing: -0.01em;
+      margin-top: 4px;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(27,79,114,0.38);
+    }
+    .cta-btn:active { transform: translateY(0); }
+
+    .closing-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .closing-avatar {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-mid) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .closing-text {
+      font-size: 14px;
+      color: var(--sub);
+      line-height: 1.65;
+    }
+    .closing-text strong { color: var(--text); font-weight: 600; }
+    .closing-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+    }
+    .save-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--r-sm);
+      padding: 11px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sub);
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .save-btn:hover { border-color: var(--accent-border); color: var(--accent); background: var(--accent-light); }
+
+    /* ─── RESET ─── */
+    .reset-row { padding: 0 36px 28px; }
+    .reset-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover { border-color: var(--border-strong); color: var(--sub); }
+
+    /* ─── DISCLAIMER ─── */
+    .calc-disclaimer {
+      padding: 15px 36px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* ─── FOOTER ─── */
+    .site-footer {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      text-align: center;
+    }
+    .footer-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .footer-sub  { font-size: 13px; color: var(--muted); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 560px) {
+      nav { padding: 18px 20px; }
+      .hero { padding: 48px 20px 40px; }
+      .hero-stats { flex-direction: column; border-radius: var(--r-md); }
+      .h-stat + .h-stat { border-left: none; border-top: 1px solid var(--border); }
+      .h-stat { padding: 16px 28px; }
+      .calc-section { padding: 0 16px 72px; }
+      .form-head, .form-body { padding-left: 22px; padding-right: 22px; }
+      .form-row { grid-template-columns: 1fr; }
+      .result-banner { padding: 24px 22px; }
+      .stats-grid { padding: 18px 22px; gap: 8px; }
+      .context-banner { margin: 16px 22px; }
+      .path-block { padding-left: 22px; padding-right: 22px; }
+      .reassurance { margin-left: 22px; margin-right: 22px; }
+      .reset-row { padding-left: 22px; padding-right: 22px; }
+      .calc-disclaimer { padding: 14px 22px; }
+    }
+
+    /* ─── RESULT ITEM STAGGER ─── */
+    .path-item:nth-child(1) { animation: fadeUp 0.35s 0.05s ease both; }
+    .path-item:nth-child(2) { animation: fadeUp 0.35s 0.12s ease both; }
+    .path-item:nth-child(3) { animation: fadeUp 0.35s 0.19s ease both; }
+    .stat-tile:nth-child(1) { animation: fadeUp 0.35s 0.02s ease both; }
+    .stat-tile:nth-child(2) { animation: fadeUp 0.35s 0.07s ease both; }
+    .stat-tile:nth-child(3) { animation: fadeUp 0.35s 0.12s ease both; }
+    .stat-tile:nth-child(4) { animation: fadeUp 0.35s 0.17s ease both; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-dot"></div>
+      Marcus Financial Planning
+    </div>
+    <a class="nav-cta" href="#calculator">Check my numbers</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-pill anim-fade-up">
+      <div class="pill-dot"></div>
+      Denver, CO · Financial Planning
+    </div>
+    <h1 class="anim-fade-up delay-1">Are we <em>okay?</em></h1>
+    <p class="hero-sub anim-fade-up delay-2">
+      It's the question underneath every question I get in a first meeting. Put your numbers in — I'll give you a straight answer before we ever get on a call.
+    </p>
+    <p class="hero-meta anim-fade-up delay-3">Takes under 3 minutes. No sign-up. No pitch.</p>
+
+    <div class="hero-stats anim-fade-up delay-4">
+      <div class="h-stat">
+        <div class="h-stat-n">12</div>
+        <div class="h-stat-l">Years in practice</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-n">60+</div>
+        <div class="h-stat-l">Denver families</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-n">100%</div>
+        <div class="h-stat-l">Straight answers</div>
+      </div>
+    </div>
+
+    <div class="scroll-cue anim-fade-up delay-5">
+      <span>Your numbers</span>
+      <div class="scroll-ring">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M6 2v8M2.5 7.5L6 11l3.5-3.5" stroke="#9A9589" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="calc-section" id="calculator">
+    <div class="calc-card anim-scale-in delay-6">
+
+      <!-- FORM -->
+      <div id="form-section">
+        <div class="form-head">
+          <div class="form-title">Where do you stand?</div>
+          <div class="form-sub">Fill this in honestly. The numbers only help if they're real.</div>
+        </div>
+        <div class="form-body">
+          <div class="form-grid">
+            <div class="form-row">
+              <div class="field">
+                <label for="f-age">Your age</label>
+                <input type="number" id="f-age" placeholder="42" min="25" max="70" />
+              </div>
+              <div class="field">
+                <label for="f-retire">Retire at</label>
+                <input type="number" id="f-retire" placeholder="65" min="50" max="80" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-income">Annual household income</label>
+              <input type="text" id="f-income" placeholder="$120,000" />
+              <span class="field-hint">Combined if you're a two-income household</span>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="f-savings">Current savings</label>
+                <input type="text" id="f-savings" placeholder="$85,000" />
+                <span class="field-hint">401k, IRA, investments</span>
+              </div>
+              <div class="field">
+                <label for="f-monthly">Saving per month</label>
+                <input type="text" id="f-monthly" placeholder="$1,500" />
+                <span class="field-hint">Across all accounts</span>
+              </div>
+            </div>
+          </div>
+          <button class="submit-btn" onclick="calculate()">
+            See where I stand
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div id="result-section">
+        <div id="r-banner" class="result-banner">
+          <div id="r-pill" class="status-pill"></div>
+          <div id="r-hl" class="result-hl"></div>
+          <div id="r-body" class="result-body"></div>
+          <div class="prog-wrap">
+            <div class="prog-track">
+              <div id="r-fill" class="prog-fill"></div>
+            </div>
+            <div class="prog-labels">
+              <span>$0</span>
+              <span id="r-prog-lbl"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-tile"><div class="stat-label">Annual expenses</div><div class="stat-value" id="s-exp"></div></div>
+          <div class="stat-tile"><div class="stat-label">Retirement target</div><div class="stat-value" id="s-target"></div></div>
+          <div class="stat-tile"><div class="stat-label" id="s-proj-lbl">Projected balance</div><div class="stat-value" id="s-proj"></div></div>
+          <div class="stat-tile"><div class="stat-label">Years to retirement</div><div class="stat-value" id="s-years"></div></div>
+        </div>
+
+        <div id="r-context" class="context-banner"></div>
+
+        <div class="path-block">
+          <div id="r-path-lbl" class="path-block-label"></div>
+          <div id="r-path-list" class="path-list"></div>
+        </div>
+
+        <div class="reassurance">
+          <div id="r-reassure" class="reassurance-copy"></div>
+          <div class="closing-block">
+            <div class="closing-avatar">M</div>
+            <div>
+              <div id="r-closing-msg" class="closing-text"></div>
+              <div class="closing-name">— Marcus</div>
+            </div>
+          </div>
+          <a href="mailto:marcus@marcusfinancial.com" class="cta-btn">
+            Book a free call with Marcus
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="reset-row">
+          <button class="reset-btn" onclick="reset()">← Run different numbers</button>
+        </div>
+
+        <div class="calc-disclaimer">
+          Assumes 7% average annual return · 25× annual expenses retirement target · For illustration only, not financial advice
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-name">Marcus Financial Planning</div>
+    <div class="footer-sub">Denver, CO · 12 years helping families get clear on their money</div>
+  </footer>
+
+  <script>
+    const BENCH = {
+      30:{median:28000,peers:"62,000"}, 35:{median:45000,peers:"58,000"},
+      40:{median:78000,peers:"71,000"}, 45:{median:112000,peers:"68,000"},
+      50:{median:165000,peers:"64,000"}, 55:{median:210000,peers:"59,000"}
+    };
+    function bracket(age){ const k=[30,35,40,45,50,55]; for(let i=k.length-1;i>=0;i--) if(age>=k[i]) return k[i]; return 30; }
+    const $=id=>document.getElementById(id);
+    function fmt(n){ return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(n); }
+    function fmtK(n){ const a=Math.abs(n); if(a>=1e6) return`$${(n/1e6).toFixed(1)}M`; if(a>=1e3) return`$${Math.round(n/1e3)}K`; return fmt(n); }
+    function parse(v){ return parseFloat(String(v).replace(/[$,\s]/g,"")); }
+    function fv(s,m,y,r=.07){ const rm=r/12,n=y*12; return s*Math.pow(1+r,y)+m*((Math.pow(1+rm,n)-1)/rm); }
+    function reqM(t,s,y,r=.07){ const rm=r/12,n=y*12,fvs=s*Math.pow(1+r,y),need=t-fvs; if(need<=0)return 0; return need/((Math.pow(1+rm,n)-1)/rm); }
+
+    function calculate(){
+      const age=parseInt($("f-age").value), ret=parseInt($("f-retire").value);
+      const inc=parse($("f-income").value), sav=parse($("f-savings").value), mo=parse($("f-monthly").value);
+      if([age,ret,inc,sav,mo].some(isNaN)||ret<=age){ alert("Please fill in all five fields. Retirement age must be higher than your current age."); return; }
+      const years=ret-age, exp=Math.max(inc-mo*12,inc*.5), target=exp*25;
+      const proj=fv(sav,mo,years), gap=target-proj, pct=Math.min((proj/target)*100,100);
+      const extra=Math.max(reqM(target,sav,years)-mo,0);
+      const p2=fv(sav,mo,years+2), p5=fv(sav,mo,years+5);
+      const ratio=proj/target, status=ratio>=1.05?"ahead":ratio>=.9?"track":"behind";
+      const b=BENCH[bracket(age)], diff=sav-b.median, abv=diff>=0?"above":"below";
+      render({status,age,ret,years,inc,sav,mo,exp,target,proj,gap,pct,extra,p2,p5,g2:target-p2,g5:target-p5,b,diff,abv});
+    }
+
+    function render(d){
+      const {status:st}=d;
+      const banner=$("r-banner"), pill=$("r-pill"), hl=$("r-hl"), fill=$("r-fill");
+
+      banner.className="result-banner "+(st==="ahead"?"rb-green":st==="track"?"rb-amber":"rb-red");
+      pill.className  ="status-pill "  +(st==="ahead"?"sp-green":st==="track"?"sp-amber":"sp-red");
+      fill.className  ="prog-fill "    +(st==="ahead"?"pf-green":st==="track"?"pf-amber":"pf-red");
+      hl.className    ="result-hl "    +(st==="ahead"?"hl-green":st==="track"?"hl-amber":"hl-red");
+
+      const dot='<span class="sp-dot"></span>';
+      if(st==="ahead"){
+        pill.innerHTML=dot+"Ahead of Schedule";
+        hl.textContent="You're in good shape.";
+        $("r-body").innerHTML=`At your current savings rate, you're on track to have <strong>${fmtK(d.proj)}</strong> by ${d.ret} — about <strong>${fmtK(d.proj-d.target)}</strong> more than you need. That's a real cushion. The question we'd talk through is whether that money is working as hard as it could be.`;
+      } else if(st==="track"){
+        pill.innerHTML=dot+"On Track";
+        hl.textContent="You're doing the right things.";
+        $("r-body").innerHTML=`You're projected to have <strong>${fmtK(d.proj)}</strong> by ${d.ret}. Your target is ${fmtK(d.target)}. Close enough that this isn't a crisis conversation — it's a fine-tuning one. A few deliberate moves now can turn "close" into "comfortable."`;
+      } else {
+        pill.innerHTML=dot+"Behind — But Not Stuck";
+        hl.textContent="You're behind. Here's the real picture.";
+        $("r-body").innerHTML=`You're on track for <strong>${fmtK(d.proj)}</strong> by ${d.ret}. To live the way you're living now, you need ${fmtK(d.target)}. That's a gap of <strong>${fmtK(Math.abs(d.gap))}</strong>. It's a real number — but it's not a verdict. People close gaps like this all the time. Below are three ways to start.`;
+      }
+
+      setTimeout(()=>{ fill.style.width=d.pct+"%"; },80);
+      $("r-prog-lbl").textContent=`${fmtK(d.proj)} projected · ${fmtK(d.target)} needed`;
+
+      $("s-exp").textContent  =fmtK(d.exp);
+      $("s-target").textContent=fmtK(d.target);
+      $("s-proj").textContent =fmtK(d.proj);
+      $("s-proj-lbl").textContent=`Projected at ${d.ret}`;
+      $("s-years").textContent=`${d.years} yrs`;
+
+      const ctx={
+        ahead:`You're ${fmtK(Math.abs(d.diff))} ${d.abv} the median savings for your age in Denver. The ${d.b.peers} people around your age in this city would be glad to be where you are.`,
+        track:`In Denver, ${d.b.peers} people your age are working with similar numbers. The median savings for your bracket is ${fmtK(d.b.median)}. You're ${fmtK(Math.abs(d.diff))} ${d.abv} that — and still very much in the game.`,
+        behind:`In Denver, ${d.b.peers} people your age are working through the same math. The median savings for your bracket is ${fmtK(d.b.median)}. You're ${fmtK(Math.abs(d.diff))} ${d.abv} that — which means you're not an outlier. You're in the middle of a problem a lot of families are actively solving.`
+      };
+      $("r-context").innerHTML=`<strong>You're not alone in this.</strong> ${ctx[st]}`;
+
+      if(st==="behind"){
+        $("r-path-lbl").textContent="Three ways to close the gap";
+        $("r-path-list").innerHTML=`
+          <div class="path-item"><div class="path-text">Save more each month, retire at ${d.ret}</div><div class="path-val">+${fmt(Math.ceil(d.extra/10)*10)}/mo</div></div>
+          <div class="path-item"><div class="path-text">Keep ${fmt(d.mo)}/mo · retire at ${d.ret+2}</div><div class="path-val ${d.g2<=0?'good':''}">${d.g2<=0?"Gap closed ✓":`Still ${fmtK(Math.abs(d.g2))} short`}</div></div>
+          <div class="path-item"><div class="path-text">Keep ${fmt(d.mo)}/mo · retire at ${d.ret+5}</div><div class="path-val ${d.g5<=0?'good':''}">${d.g5<=0?"Gap closed ✓":`Still ${fmtK(Math.abs(d.g5))} short`}</div></div>`;
+      } else if(st==="track"){
+        $("r-path-lbl").textContent="Small moves, real impact";
+        $("r-path-list").innerHTML=`
+          <div class="path-item"><div class="path-text">If you added $500/mo starting today</div><div class="path-val good">${fmtK(fv(d.sav,d.mo+500,d.years))} at ${d.ret}</div></div>
+          <div class="path-item"><div class="path-text">If you retired at ${d.ret-2} instead</div><div class="path-val">${fmtK(fv(d.sav,d.mo,d.years-2))} projected</div></div>`;
+      } else {
+        $("r-path-lbl").textContent="What your numbers could look like";
+        $("r-path-list").innerHTML=`
+          <div class="path-item"><div class="path-text">If you added $500/mo starting today</div><div class="path-val good">${fmtK(fv(d.sav,d.mo+500,d.years))} at ${d.ret}</div></div>
+          <div class="path-item"><div class="path-text">Current savings rate</div><div class="path-val">${Math.round((d.mo*12/d.inc)*100)}% of income</div></div>`;
+      }
+
+      const ra={
+        ahead: `You've done the hard work. What we focus on when you come in is making sure your plan is <strong>built to last</strong> — not just large enough on paper, but structured to survive market shifts and life changes. That's a good conversation to be having.`,
+        track: `You're in range. The gap between "close" and "comfortable" usually comes down to a few well-timed decisions. <strong>When you come in, we'll look at exactly what to do and in what order</strong> — no guesswork, just a clear next step.`,
+        behind:`Being behind doesn't mean you've lost. It means you haven't had the right plan yet. <strong>I've sat across the table from people in tighter spots than this and watched them retire on their own terms.</strong> It doesn't take dramatic changes — it takes consistent, small ones made with intention. That's what we'll work through together.`
+      };
+      $("r-reassure").innerHTML=ra[st];
+
+      const closing={
+        ahead: `These are good numbers. If you want to talk through what to do with them — whether that's optimising your structure, planning for tax, or just making sure everything holds — that's exactly what a first call is for. No pressure, no pitch.`,
+        track: `You're closer than most people think. The difference between "close" and "set" usually comes down to a few decisions made at the right time. If you want to map those out together, a 30-minute call is the right place to start.`,
+        behind:`This is fixable. I've sat across the table from people in tighter spots than this and watched them retire on their own terms. If you want to see what that looks like for your specific numbers, let's talk.`
+      };
+      $("r-closing-msg").innerHTML=closing[st];
+
+      $("form-section").style.display="none";
+      $("result-section").style.display="block";
+      $("result-section").classList.add("visible");
+      document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});
+    }
+
+    function reset(){
+      $("result-section").style.display="none";
+      $("result-section").classList.remove("visible");
+      $("form-section").style.display="block";
+      $("r-fill").style.width="0%";
+      document.getElementById("calculator").scrollIntoView({behavior:"smooth",block:"start"});
+    }
+  </script>
+</body>
+</html>

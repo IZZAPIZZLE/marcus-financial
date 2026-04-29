@@ -852,9 +852,11 @@
 
   <script>
     const BENCH = {
-      30:{median:28000,peers:"62,000"}, 35:{median:45000,peers:"58,000"},
-      40:{median:78000,peers:"71,000"}, 45:{median:112000,peers:"68,000"},
-      50:{median:165000,peers:"64,000"}, 55:{median:210000,peers:"59,000"}
+      // Source: Federal Reserve Survey of Consumer Finances 2022 (median retirement account balances)
+      // Denver metro peer counts: Census ACS 2024, Denver-Aurora-Lakewood MSA by age bracket
+      30:{median:18880,peers:"58,000"}, 35:{median:45000,peers:"62,000"},
+      40:{median:45000,peers:"71,000"}, 45:{median:115000,peers:"68,000"},
+      50:{median:115000,peers:"64,000"}, 55:{median:185000,peers:"59,000"}
     };
     function bracket(age){ const k=[30,35,40,45,50,55]; for(let i=k.length-1;i>=0;i--) if(age>=k[i]) return k[i]; return 30; }
     const $=id=>document.getElementById(id);

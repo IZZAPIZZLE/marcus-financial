@@ -877,7 +877,7 @@
       const proj=fv(sav,mo,years), gap=target-proj, pct=Math.min((proj/target)*100,100);
       const extra=Math.max(reqM(target,sav,years)-mo,0);
       const p2=fv(sav,mo,years+2), p5=fv(sav,mo,years+5);
-      const ratio=proj/target, status=ratio>=1.05?"ahead":ratio>=.9?"track":"behind";
+      const ratio=proj/target, status=ratio>=1.05?"ahead":ratio>=.9?"track":ratio>=.7?"close":"behind";
       const b=BENCH[bracket(age)], diff=sav-b.median, abv=diff>=0?"above":"below";
       render({status,age,ret,years,inc,sav,mo,exp,target,proj,gap,pct,extra,p2,p5,g2:target-p2,g5:target-p5,b,diff,abv});
     }
@@ -886,6 +886,7 @@
       const {status:st}=d;
       const banner=$("r-banner"), pill=$("r-pill"), hl=$("r-hl"), fill=$("r-fill");
 
+      const isRed=st==="close"||st==="behind";
       banner.className="result-banner "+(st==="ahead"?"rb-green":st==="track"?"rb-amber":"rb-red");
       pill.className  ="status-pill "  +(st==="ahead"?"sp-green":st==="track"?"sp-amber":"sp-red");
       fill.className  ="prog-fill "    +(st==="ahead"?"pf-green":st==="track"?"pf-amber":"pf-red");
@@ -893,17 +894,21 @@
 
       const dot='<span class="sp-dot"></span>';
       if(st==="ahead"){
-        pill.innerHTML=dot+"Ahead of Schedule";
+        pill.innerHTML=dot+"You're in great shape";
         hl.textContent="You're in good shape.";
         $("r-body").innerHTML=`At your current savings rate, you're on track to have <strong>${fmtK(d.proj)}</strong> by ${d.ret} — about <strong>${fmtK(d.proj-d.target)}</strong> more than you need. That's a real cushion. The question we'd talk through is whether that money is working as hard as it could be.`;
       } else if(st==="track"){
-        pill.innerHTML=dot+"On Track";
+        pill.innerHTML=dot+"You're close";
         hl.textContent="You're doing the right things.";
         $("r-body").innerHTML=`You're projected to have <strong>${fmtK(d.proj)}</strong> by ${d.ret}. Your target is ${fmtK(d.target)}. Close enough that this isn't a crisis conversation — it's a fine-tuning one. A few deliberate moves now can turn "close" into "comfortable."`;
+      } else if(st==="close"){
+        pill.innerHTML=dot+"There's a gap — it's closable";
+        hl.textContent="Your savings will get you part of the way. Let's close the rest.";
+        $("r-body").innerHTML=`You're on track for <strong>${fmtK(d.proj)}</strong> by ${d.ret}. To keep living the way you're living now, you need ${fmtK(d.target)}. That's a gap of <strong>${fmtK(Math.abs(d.gap))}</strong> — and it's the kind of gap that closes with a few consistent moves over time. Below are three levers.`;
       } else {
-        pill.innerHTML=dot+"Behind — But Not Stuck";
-        hl.textContent="You're behind. Here's the real picture.";
-        $("r-body").innerHTML=`You're on track for <strong>${fmtK(d.proj)}</strong> by ${d.ret}. To live the way you're living now, you need ${fmtK(d.target)}. That's a gap of <strong>${fmtK(Math.abs(d.gap))}</strong>. It's a real number — but it's not a verdict. People close gaps like this all the time. Below are three ways to start.`;
+        pill.innerHTML=dot+"This is exactly why we exist";
+        hl.textContent=`Your current savings will get you to ${fmtK(d.proj)}. Here's how we get you to where you need to be.`;
+        $("r-body").innerHTML=`Based on what you've entered, you're on track for <strong>${fmtK(d.proj)}</strong> by ${d.ret}. Your target is <strong>${fmtK(d.target)}</strong>. That gap is real — and it's exactly the kind of situation Marcus works through every week. You haven't lost anything. You've just found the starting point.`;
       }
 
       setTimeout(()=>{ fill.style.width=d.pct+"%"; },80);
@@ -918,11 +923,12 @@
       const ctx={
         ahead:`You're ${fmtK(Math.abs(d.diff))} ${d.abv} the median savings for your age in Denver. The ${d.b.peers} people around your age in this city would be glad to be where you are.`,
         track:`In Denver, ${d.b.peers} people your age are working with similar numbers. The median savings for your bracket is ${fmtK(d.b.median)}. You're ${fmtK(Math.abs(d.diff))} ${d.abv} that — and still very much in the game.`,
-        behind:`In Denver, ${d.b.peers} people your age are working through the same math. The median savings for your bracket is ${fmtK(d.b.median)}. You're ${fmtK(Math.abs(d.diff))} ${d.abv} that — which means you're not an outlier. You're in the middle of a problem a lot of families are actively solving.`
+        close:`In Denver, ${d.b.peers} people your age are sitting with a similar gap. The median savings for your bracket is ${fmtK(d.b.median)}. You're not far from the middle — and the middle is where most gaps get closed.`,
+        behind:`In Denver, ${d.b.peers} people your age are working through the same math. The median savings for your bracket is ${fmtK(d.b.median)}. You're not an outlier. You're in the middle of a problem a lot of families are actively solving — with the right help.`
       };
       $("r-context").innerHTML=`<strong>You're not alone in this.</strong> ${ctx[st]}`;
 
-      if(st==="behind"){
+      if(st==="behind"||st==="close"){
         $("r-path-lbl").textContent="Three ways to close the gap";
         $("r-path-list").innerHTML=`
           <div class="path-item"><div class="path-text">Save more each month, retire at ${d.ret}</div><div class="path-val">+${fmt(Math.ceil(d.extra/10)*10)}/mo</div></div>
@@ -943,14 +949,16 @@
       const ra={
         ahead: `You've done the hard work. What we focus on when you come in is making sure your plan is <strong>built to last</strong> — not just large enough on paper, but structured to survive market shifts and life changes. That's a good conversation to be having.`,
         track: `You're in range. The gap between "close" and "comfortable" usually comes down to a few well-timed decisions. <strong>When you come in, we'll look at exactly what to do and in what order</strong> — no guesswork, just a clear next step.`,
-        behind:`Being behind doesn't mean you've lost. It means you haven't had the right plan yet. <strong>I've sat across the table from people in tighter spots than this and watched them retire on their own terms.</strong> It doesn't take dramatic changes — it takes consistent, small ones made with intention. That's what we'll work through together.`
+        close: `A gap at this stage is normal — and it's the exact kind of problem that responds well to a plan. <strong>The families I work with in this position usually have more options than they think.</strong> A first conversation costs nothing and tends to change how you see the whole picture.`,
+        behind:`This is exactly the situation I built my practice around. <strong>I've sat across the table from people in tighter spots than this and watched them retire on their own terms.</strong> It doesn't take a miracle — it takes a clear plan, started now. That's what a first call is for.`
       };
       $("r-reassure").innerHTML=ra[st];
 
       const closing={
         ahead: `These are good numbers. If you want to talk through what to do with them — whether that's optimising your structure, planning for tax, or just making sure everything holds — that's exactly what a first call is for. No pressure, no pitch.`,
         track: `You're closer than most people think. The difference between "close" and "set" usually comes down to a few decisions made at the right time. If you want to map those out together, a 30-minute call is the right place to start.`,
-        behind:`This is fixable. I've sat across the table from people in tighter spots than this and watched them retire on their own terms. If you want to see what that looks like for your specific numbers, let's talk.`
+        close: `You've got a gap and you've got time. Those two things together are more powerful than most people realise. If you want to see what closing it actually looks like for your numbers, that's exactly what a first call is for.`,
+        behind:`You found this early enough to do something about it. That matters more than the number you're looking at right now. I'd rather have this conversation with you today than in ten years. Let's talk.`
       };
       $("r-closing-msg").innerHTML=closing[st];
 
